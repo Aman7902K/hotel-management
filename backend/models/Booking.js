@@ -1,0 +1,46 @@
+const mongoose = require('mongoose');
+
+const bookingSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  room: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Room',
+    required: true,
+  },
+  checkInDate: {
+    type: Date,
+    required: [true, 'Please add a check-in date'],
+  },
+  checkOutDate: {
+    type: Date,
+    required: [true, 'Please add a check-out date'],
+  },
+  numberOfGuests: {
+    type: Number,
+    required: [true, 'Please add number of guests'],
+    min: 1,
+  },
+  totalPrice: {
+    type: Number,
+    required: [true, 'Please add total price'],
+    min: 0,
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'cancelled', 'completed'],
+    default: 'pending',
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+// Index for checking room availability
+bookingSchema.index({ room: 1, checkInDate: 1, checkOutDate: 1 });
+
+module.exports = mongoose.model('Booking', bookingSchema);
