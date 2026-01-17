@@ -33,7 +33,7 @@ A complete hotel management system built with the MERN stack (MongoDB, Express.j
 - express-rate-limit
 
 ### Frontend
-- React 18
+- React 19
 - React Router DOM v6
 - Axios
 - Tailwind CSS

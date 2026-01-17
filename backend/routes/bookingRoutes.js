@@ -1,13 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const {
+import { Router } from 'express';
+import {
   createBooking,
   getUserBookings,
   getAllBookings,
   updateBooking,
   cancelBooking,
-} = require('../controllers/bookingController');
-const { protect, admin } = require('../middleware/auth');
+} from '../controllers/bookingController.js';
+import { protect, admin } from '../middleware/auth.js';
+
+const router = Router();
 
 router.route('/')
   .post(protect, createBooking)
@@ -19,4 +20,4 @@ router.route('/:id')
   .put(protect, admin, updateBooking)
   .delete(protect, cancelBooking);
 
-module.exports = router;
+export default router

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const bookingSchema = new mongoose.Schema({
   user: {
@@ -43,4 +43,7 @@ const bookingSchema = new mongoose.Schema({
 // Index for checking room availability
 bookingSchema.index({ room: 1, checkInDate: 1, checkOutDate: 1 });
 
-module.exports = mongoose.model('Booking', bookingSchema);
+const Booking = mongoose.model("Booking", bookingSchema)
+
+
+export default Booking

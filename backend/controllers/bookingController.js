@@ -1,5 +1,5 @@
-const Booking = require('../models/Booking');
-const Room = require('../models/Room');
+import Booking from '../models/Booking.js';
+import Room from '../models/Room.js';
 
 // Helper function to check room availability
 const checkRoomAvailability = async (roomId, checkInDate, checkOutDate, excludeBookingId = null) => {
@@ -28,10 +28,7 @@ const checkRoomAvailability = async (roomId, checkInDate, checkOutDate, excludeB
   return overlappingBookings.length === 0;
 };
 
-// @desc    Create a new booking
-// @route   POST /api/bookings
-// @access  Private
-exports.createBooking = async (req, res) => {
+const createBooking = async (req, res) => {
   try {
     const { room, checkInDate, checkOutDate, numberOfGuests, totalPrice } = req.body;
 
@@ -100,7 +97,7 @@ exports.createBooking = async (req, res) => {
 // @desc    Get user's bookings
 // @route   GET /api/bookings/user
 // @access  Private
-exports.getUserBookings = async (req, res) => {
+const getUserBookings = async (req, res) => {
   try {
     const bookings = await Booking.find({ user: req.user._id })
       .populate('room')
@@ -119,7 +116,7 @@ exports.getUserBookings = async (req, res) => {
 // @desc    Get all bookings
 // @route   GET /api/bookings
 // @access  Private/Admin
-exports.getAllBookings = async (req, res) => {
+const getAllBookings = async (req, res) => {
   try {
     const bookings = await Booking.find()
       .populate('user', 'name email phone')
@@ -139,7 +136,7 @@ exports.getAllBookings = async (req, res) => {
 // @desc    Update booking status
 // @route   PUT /api/bookings/:id
 // @access  Private/Admin
-exports.updateBooking = async (req, res) => {
+const updateBooking = async (req, res) => {
   try {
     const { status } = req.body;
 
@@ -169,7 +166,7 @@ exports.updateBooking = async (req, res) => {
 // @desc    Cancel booking
 // @route   DELETE /api/bookings/:id
 // @access  Private
-exports.cancelBooking = async (req, res) => {
+const cancelBooking = async (req, res) => {
   try {
     const booking = await Booking.findById(req.params.id);
 
@@ -203,3 +200,6 @@ exports.cancelBooking = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+export {cancelBooking,updateBooking,getAllBookings,getUserBookings,createBooking,checkRoomAvailability}

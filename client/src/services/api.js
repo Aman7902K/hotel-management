@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || '/api';
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+console.log('API URL:', API_URL);
 
 // Create axios instance
 const api = axios.create({
@@ -11,15 +12,40 @@ const api = axios.create({
 });
 
 // Add token to requests
-api.interceptors.request.use(
+api.interceptors.request. use(
   (config) => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    if (user.token) {
-      config.headers.Authorization = `Bearer ${user.token}`;
+    try {
+      const userStr = localStorage.getItem('user');
+      
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        
+        if (user?. token) {
+          config.headers = config.headers || {};
+          config.headers.Authorization = `Bearer ${user.token}`;
+        }
+      }
+    } catch (error) {
+      console.error('Error parsing user from localStorage:', error);
+      localStorage.removeItem('user');
     }
+    
     return config;
   },
   (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor to handle auth errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('user');
+      // Optionally redirect to login
+      // window.location.href = '/login';
+    }
     return Promise.reject(error);
   }
 );

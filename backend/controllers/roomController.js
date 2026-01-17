@@ -1,9 +1,9 @@
-const Room = require('../models/Room');
+import Room from '../models/Room.js';
 
 // @desc    Get all rooms
 // @route   GET /api/rooms
 // @access  Public
-exports.getRooms = async (req, res) => {
+const getRooms = async (req, res) => {
   try {
     const { type, minPrice, maxPrice, isAvailable } = req.query;
 
@@ -39,7 +39,7 @@ exports.getRooms = async (req, res) => {
 // @desc    Get single room
 // @route   GET /api/rooms/:id
 // @access  Public
-exports.getRoom = async (req, res) => {
+const getRoom = async (req, res) => {
   try {
     const room = await Room.findById(req.params.id);
 
@@ -59,7 +59,7 @@ exports.getRoom = async (req, res) => {
 // @desc    Create a room
 // @route   POST /api/rooms
 // @access  Private/Admin
-exports.createRoom = async (req, res) => {
+const createRoom = async (req, res) => {
   try {
     const room = await Room.create(req.body);
 
@@ -78,7 +78,7 @@ exports.createRoom = async (req, res) => {
 // @desc    Update a room
 // @route   PUT /api/rooms/:id
 // @access  Private/Admin
-exports.updateRoom = async (req, res) => {
+const updateRoom = async (req, res) => {
   try {
     let room = await Room.findById(req.params.id);
 
@@ -103,7 +103,7 @@ exports.updateRoom = async (req, res) => {
 // @desc    Delete a room
 // @route   DELETE /api/rooms/:id
 // @access  Private/Admin
-exports.deleteRoom = async (req, res) => {
+const deleteRoom = async (req, res) => {
   try {
     const room = await Room.findById(req.params.id);
 
@@ -121,3 +121,11 @@ exports.deleteRoom = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export {
+  getRooms,
+  getRoom,
+  createRoom,
+  updateRoom,
+  deleteRoom
+}
