@@ -1,8 +1,7 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-
+import jwt from "jsonwebtoken"
+import User from "../models/User.js";
 // Protect routes - Verify JWT token
-exports.protect = async (req, res, next) => {
+const protect = async (req, res, next) => {
   let token;
 
   if (
@@ -36,10 +35,15 @@ exports.protect = async (req, res, next) => {
 };
 
 // Admin middleware
-exports.admin = (req, res, next) => {
+const admin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();
   } else {
     res.status(403).json({ message: 'Not authorized as admin' });
   }
 };
+
+export {
+  protect,
+  admin
+}

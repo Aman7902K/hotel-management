@@ -1,13 +1,14 @@
-const express = require('express');
-const router = express.Router();
-const {
+import { Router } from 'express';
+import {
   getRooms,
   getRoom,
   createRoom,
   updateRoom,
   deleteRoom,
-} = require('../controllers/roomController');
-const { protect, admin } = require('../middleware/auth');
+} from '../controllers/roomController.js';
+import { protect, admin } from '../middleware/auth.js';
+
+const router = Router();
 
 router.route('/')
   .get(getRooms)
@@ -18,4 +19,4 @@ router.route('/:id')
   .put(protect, admin, updateRoom)
   .delete(protect, admin, deleteRoom);
 
-module.exports = router;
+export default router
